@@ -4,7 +4,7 @@ package ru.mail.polis.structures;
  * Created by Nechaev Mikhail
  * Since 12/11/2017.
  */
-public class SimpleInteger implements Numerical, Comparable<SimpleInteger> {
+public class SimpleInteger implements Numerical<SimpleInteger> {
 
     private static final int DIGIT_COUNT = 10;
 
