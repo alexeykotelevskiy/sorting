@@ -4,12 +4,22 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import ru.mail.polis.structures.IntKeyIntegerValueObject;
+import ru.mail.polis.structures.SimpleInteger;
+
 public class SortUtils {
 
     private static final Random r = ThreadLocalRandom.current();
 
     public static void swap(int[] a, int i, int j) {
         int x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+
+    public static <T>void swap(T[] a, int i,int j)
+    {
+        T x = a[i];
         a[i] = a[j];
         a[j] = x;
     }
@@ -24,6 +34,24 @@ public class SortUtils {
             SortUtils.swap(a, i, j);
         }
         return a;
+    }
+
+    public static IntKeyIntegerValueObject[] generateIntKeyArray(int[] input)
+    {
+        IntKeyIntegerValueObject[] res = new IntKeyIntegerValueObject[input.length];
+        for (int i = 0; i < input.length; i++)
+        {
+            res[i] = new IntKeyIntegerValueObject(input[i], r.nextInt());
+        }
+        return res;
+    }
+
+    public static SimpleInteger[] SimpleIntegerGenerate(int[] input)
+    {
+        SimpleInteger[] res = new SimpleInteger[input.length];
+        for (int i = 0; i< input.length; i++)
+            res[i] = new SimpleInteger(input[i]);
+        return res;
     }
 
     public static boolean isArraySorted(int[] a) {
