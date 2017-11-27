@@ -2,11 +2,13 @@ package ru.mail.polis.sort;
 
 import ru.mail.polis.structures.IntKeyObject;
 
+/**
+ * Created by Nechaev Mikhail
+ * Since 27/11/2017.
+ */
+public class CountingSort<T extends IntKeyObject> implements Sort<T> {
 
-
-public class CountingSort {
-
-    static <V extends IntKeyObject> int findMax(V[] a) {
+    int findMax(T[] a) {
         int max = a[0].getKey();
         for (int i = 1; i < a.length; i++) {
             max = Math.max(max, a[i].getKey());
@@ -14,22 +16,25 @@ public class CountingSort {
         return max;
     }
 
-    public static <V extends IntKeyObject> void sort(V[] a) {
-        int max = findMax(a);
+    public CountingSort() {
+        /* empty */
+    }
+
+    @Override
+    public void sort(T[] array) {
+
+        int max = findMax(array);
         int[] count = new int[max + 1];
-        for (V x : a) {
+        for (T x : array) {
             count[x.getKey()]++;
         }
         for (int i = 1; i <= max; i++) {
             count[i] += count[i - 1];
         }
-        V[] res = (V[])new IntKeyObject[a.length];
-        for (int i = a.length - 1; i >= 0; i--) {
-            res[--count[a[i].getKey()]] = a[i];
+        T[] res = (T[])new IntKeyObject[array.length];
+        for (int i = array.length - 1; i >= 0; i--) {
+            res[--count[array[i].getKey()]] = array[i];
         }
-        System.arraycopy(res, 0, a, 0, a.length);
+        System.arraycopy(res, 0, array, 0, array.length);
     }
-
-
-
 }
