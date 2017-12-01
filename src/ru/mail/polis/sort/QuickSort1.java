@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
 
-    public void quickSort(T[] a, int left, int right)
+    private void quickSort(T[] a, int left, int right)
     {
         if (left >= right ) return;
         if (right - left <=15)
@@ -26,7 +26,7 @@ public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
         }
     }
 
-    public int partition(T[] a, int left, int right)
+    private int partition(T[] a, int left, int right)
     {
         Random r = new Random();
         T p = a[r.nextInt(right - left) + left];
@@ -43,5 +43,10 @@ public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
             }
         }
         return i;
+    }
+
+    @Override
+    public void sort(T[] array) {
+        quickSort(array, 0 , array.length - 1);
     }
 }

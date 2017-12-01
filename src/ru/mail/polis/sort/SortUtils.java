@@ -1,11 +1,13 @@
 package ru.mail.polis.sort;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ru.mail.polis.structures.IntKeyIntegerValueObject;
 import ru.mail.polis.structures.SimpleInteger;
+import ru.mail.polis.structures.SimpleString;
 
 public class SortUtils {
 
@@ -24,6 +26,14 @@ public class SortUtils {
         a[j] = x;
     }
 
+    public static int[] generateRandomArray(int n)
+    {
+        int a[] = new int[n];
+        for (int i = 0; i < a.length; i++)
+            a[i] = r.nextInt(Integer.MAX_VALUE);
+        return a;
+    }
+
     public static int[] generateArray(int n) {
         int[] a = new int[n];
         for (int i = 0; i < a.length; i++) {
@@ -34,6 +44,62 @@ public class SortUtils {
             SortUtils.swap(a, i, j);
         }
         return a;
+    }
+
+    public static String generateRandomString(int n)
+    {
+        StringBuilder a = new StringBuilder();
+        for (int i = 0; i < n; i++){
+            int ch = r.nextInt(25);
+            a.append((char)(ch + 'a'));
+        }
+        return a.toString();
+    }
+
+    public static String[] generateRandomStringOneSizeArray(int n)
+    {
+        String[] a = new String[n];
+        for (int i=0; i<a.length; i++)
+        {
+            a[i] = generateRandomString(100);
+        }
+        return a;
+    }
+
+
+    public static String[] generateRandomStringArray(int n)
+    {
+        String[] a = new String[n];
+        for (int i=0; i<a.length; i++)
+        {
+            a[i] = generateRandomString(r.nextInt(100) + 1);
+        }
+        return a;
+    }
+
+
+    public static SimpleString[] generateSimpleString(String[] input)
+    {
+        SimpleString[] a = new SimpleString[input.length];
+        for (int i = 0; i < a.length; i++)
+        {
+            a[i] = new SimpleString(input[i]);
+        }
+        return a;
+    }
+
+
+    public static int[] generateManyDouble(int n)
+    {
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++)
+            a[i] = r.nextInt(n/10);
+        return a;
+    }
+
+    public static Integer[] generateObjArray(int[] a)
+    {
+        return Arrays.stream( a ).boxed().toArray(Integer[]::new);
     }
 
     public static IntKeyIntegerValueObject[] generateIntKeyArray(int[] input)

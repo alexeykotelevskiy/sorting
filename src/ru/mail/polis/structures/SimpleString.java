@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class SimpleString implements Numerical<SimpleString> {
 
     private static final Pattern SIMPLE_STRING = Pattern.compile("^[a-z]+$");
-    private static final int DIGIT_COUNT = 'z' - 'a' + 1;
+    private static final int DIGIT_COUNT = 100;
     private static final int MIN_DIGIT_VALUE = 'a' - 1;
 
     private final String data;

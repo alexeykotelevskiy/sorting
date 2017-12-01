@@ -3,16 +3,9 @@ package ru.mail.polis.sort;
 public class HeapSort<T> extends AbstractSortOnComparisons<T>{
     int size;
     T []a;
-    public HeapSort(T[] arr){
-        a = arr;
-        for (int i = a.length / 2; i >=0; i--)
-        {
-            buildDown(i);
-        }
-        size = a.length;
-    }
 
-    public  void sort()
+
+    private  void sort()
     {
         T[] res =(T[]) new Object[a.length];
         int i = 0;
@@ -72,4 +65,14 @@ public class HeapSort<T> extends AbstractSortOnComparisons<T>{
     }
 
 
+    @Override
+    public void sort(T[] array) {
+        a = array;
+        for (int i = a.length / 2; i >=0; i--)
+        {
+            buildDown(i);
+        }
+        size = a.length;
+        sort();
+    }
 }

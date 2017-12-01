@@ -1,6 +1,5 @@
 package ru.mail.polis.bench;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -21,17 +20,8 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import ru.mail.polis.sort.BubbleSort;
-import ru.mail.polis.sort.CountingSort;
-import ru.mail.polis.sort.HeapSort;
-import ru.mail.polis.sort.LSD;
-import ru.mail.polis.sort.MergeSort;
-import ru.mail.polis.sort.QuickSort1;
-import ru.mail.polis.sort.QuickSort2;
 import ru.mail.polis.sort.SortUtils;
-import ru.mail.polis.structures.IntKeyIntegerValueObject;
-import ru.mail.polis.structures.IntKeyStringValueObject;
 import ru.mail.polis.structures.SimpleInteger;
-import ru.mail.polis.structures.SimpleString;
 
 /**
  * Created by Nechaev Mikhail
@@ -44,59 +34,50 @@ import ru.mail.polis.structures.SimpleString;
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
-public class AverageTimeBench {
-    enum State{
-        RANDOM,
-        UNIQUE,
-        MANY_DOUBLE,
-        STRINGS
-    };
-
-    State currstate;
-
-
+public class AverageTimeBench extends StateInput{
 
     int[][] data;
     int[] curr;
-    Integer[] objCurr;
     int index;
-    IntKeyIntegerValueObject[][] dataIntKey;
-    IntKeyIntegerValueObject[] currIntKey;
-    IntKeyStringValueObject[][] dataIntKeyString;
-    IntKeyStringValueObject[] currIntKeyString;
-    SimpleInteger[][] dataSimpleInteger;
-    SimpleInteger[] currSimpleInteger;
-    SimpleString[][] dataSimpleString;
-    SimpleString[] currSimpleString;
 
-
+    String[][] dataString;
+    String[] currString;
 
     @Setup(value = Level.Trial)
     public void setUpTrial() {
-        currstate=State.RANDOM;
+        currstate = State.MANY_DOUBLE;
+        data = new int[TEST_COUNT][DATA_COUNT];
 
-        index = 0;
-        data = new int[10][10000];
-        dataIntKey = new IntKeyIntegerValueObject[10][10000];
-        dataSimpleInteger = new SimpleInteger[10][10000];
-
-        if (currstate == State.RANDOM) {
-
-            for (int i = 0; i < 10; i++) {
-                data[i] = SortUtils.generateArray(10000);
-                dataIntKey[i] = SortUtils.generateIntKeyArray(data[i]);
-                dataSimpleInteger[i] = SortUtils.SimpleIntegerGenerate(data[i]);
+        if (currstate == State.UNIQUE) {
+            for (int i = 0; i < TEST_COUNT; i++) {
+                //define arrays here
+                data[i] = SortUtils.generateArray(DATA_COUNT);
             }
         }
+
+        if (currstate == State.RANDOM)
+        {
+            for (int i = 0; i < TEST_COUNT; i++) {
+                //define arrays here
+                data[i] = SortUtils.generateRandomArray(DATA_COUNT);
+            }
+        }
+
+
+        if (currstate == State.MANY_DOUBLE)
+        {
+            for (int i = 0; i < TEST_COUNT; i++) {
+                //define arrays here
+                data[i] = SortUtils.generateManyDouble(DATA_COUNT);
+            }
+        }
+
     }
 
     @Setup(value = Level.Invocation)
     public void setUpInvocation() {
         curr = Arrays.copyOf(data[index], data[index].length);
-        objCurr = Arrays.stream( curr ).boxed().toArray( Integer[]::new );
-        currIntKey = Arrays.copyOf(dataIntKey[index], dataIntKey[index].length);
-        currSimpleInteger = Arrays.copyOf(dataSimpleInteger[index],dataSimpleInteger[index].length);
-        index%=10;
+        index = (index + 1) % 10;
     }
 
     @Benchmark
@@ -104,50 +85,11 @@ public class AverageTimeBench {
         BubbleSort.sort(curr);
     }
 
-    @Benchmark
-    public void measureMergeSort(){
-        MergeSort<Integer> s = new MergeSort<>();
-        s.sort(objCurr);
-    }
-
-    @Benchmark
-    public void measureHeapSort()
-    {
-        HeapSort<Integer> s = new HeapSort<>(objCurr);
-        s.sort();
-    }
-
-
-    @Benchmark
-    public void measureQuickSort1()
-    {
-        QuickSort1<Integer> s = new QuickSort1<>();
-        s.quickSort(objCurr,0,objCurr.length - 1);
-    }
-
-    @Benchmark
-    public void measureQuickSort2()
-    {
-        QuickSort2<Integer> s = new QuickSort2<>();
-        s.sort(objCurr);
-    }
-
-    @Benchmark
-    public void measureCountingSort()
-    {
-        CountingSort.sort(currIntKey);
-    }
-
-    @Benchmark
-    public void measureLSDSort()
-    {
-        LSD.sort(currSimpleInteger);
-    }
-
-
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
                 .include(AverageTimeBench.class.getSimpleName())
+                .include(IntKeyObjectSortBench.class.getSimpleName())
+                .include(SimpleInteger.class.getSimpleName())
                 .build();
 
         new Runner(opt).run();

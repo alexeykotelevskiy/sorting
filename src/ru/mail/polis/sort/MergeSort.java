@@ -9,15 +9,6 @@ public class MergeSort<T> extends AbstractSortOnComparisons<T>{
         super();
     }
 
-    public T[] sort(T[] values) {
-        this.numbers = values;
-        number = values.length;
-
-        this.helper = (T[]) new Object[number];
-        mergesort(0, number - 1);
-        return numbers;
-    }
-
     private void mergesort(int low, int high) {
         if (low < high) {
             int middle = low + ((high - low) >> 1);
@@ -51,5 +42,13 @@ public class MergeSort<T> extends AbstractSortOnComparisons<T>{
             i++;
         }
 
+    }
+
+    @Override
+    public void sort(T[] array) {
+        this.numbers = array;
+        number = array.length;
+        this.helper = (T[]) new Object[number];
+        mergesort(0, number - 1);
     }
 }
