@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ru.mail.polis.structures.IntKeyIntegerValueObject;
+import ru.mail.polis.structures.IntKeyStringValueObject;
 import ru.mail.polis.structures.SimpleInteger;
 import ru.mail.polis.structures.SimpleString;
 
@@ -50,7 +51,7 @@ public class SortUtils {
     {
         StringBuilder a = new StringBuilder();
         for (int i = 0; i < n; i++){
-            int ch = r.nextInt(25);
+            int ch = r.nextInt(26);
             a.append((char)(ch + 'a'));
         }
         return a.toString();
@@ -93,7 +94,7 @@ public class SortUtils {
     {
         int[] a = new int[n];
         for (int i = 0; i < n; i++)
-            a[i] = r.nextInt(n/10);
+            a[i] = r.nextInt(n/(n/100));
         return a;
     }
 
@@ -101,6 +102,18 @@ public class SortUtils {
     {
         return Arrays.stream( a ).boxed().toArray(Integer[]::new);
     }
+
+
+    public static IntKeyStringValueObject[] generateIntKeyStrArray(String[] input, int keyRange)
+    {
+        IntKeyStringValueObject[] res = new IntKeyStringValueObject[input.length];
+        for (int i=0;i<input.length;i++)
+        {
+            res[i] = new IntKeyStringValueObject(r.nextInt(keyRange), input[i]);
+        }
+        return res;
+    }
+
 
     public static IntKeyIntegerValueObject[] generateIntKeyArray(int[] input)
     {

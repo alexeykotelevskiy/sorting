@@ -13,7 +13,7 @@ public class HeapSort<T> extends AbstractSortOnComparisons<T>{
         {
             res[i++] = getMin();
         }
-        a = res;
+        System.arraycopy(res,0,a,0,res.length);
     }
 
 
@@ -45,7 +45,7 @@ public class HeapSort<T> extends AbstractSortOnComparisons<T>{
             min = right;
         if (min != i)
         {
-            SortUtils.swap(a, min, i);
+            swap(a, min, i);
             buildDown(min);
         }
     }
@@ -68,11 +68,12 @@ public class HeapSort<T> extends AbstractSortOnComparisons<T>{
     @Override
     public void sort(T[] array) {
         a = array;
+        this.size = array.length;
         for (int i = a.length / 2; i >=0; i--)
         {
             buildDown(i);
         }
-        size = a.length;
+
         sort();
     }
 }

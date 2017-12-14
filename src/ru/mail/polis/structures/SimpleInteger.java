@@ -6,7 +6,7 @@ package ru.mail.polis.structures;
  */
 public class SimpleInteger implements Numerical<SimpleInteger> {
 
-    private static final int DIGIT_COUNT = 10;
+    private static final int DIGIT_COUNT = 2;
 
     private final int data;
 
@@ -37,7 +37,7 @@ public class SimpleInteger implements Numerical<SimpleInteger> {
     @Override
     public int getDigitCount() {
         //todo
-        return Integer.SIZE / 2;
+        return Integer.SIZE / 2 - 1;
     }
 
     @Override

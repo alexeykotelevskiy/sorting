@@ -1,54 +1,37 @@
 package ru.mail.polis.sort;
 
-import java.util.Arrays;
+
 import java.util.Random;
 
 public class QuickSort2<T> extends AbstractSortOnComparisons<T> implements Sort<T> {
 
-    public void sort (T[] array){
-        sort (array, 0, array.length - 1);
+    public void sort (T[] array)
+    {
+        quickSort (array, 0, array.length - 1);
     }
 
-    private void sort(T[] input, int lowIndex, int highIndex) {
-        if (highIndex<=lowIndex) return;
-        T pivot1=input[lowIndex];
-        T pivot2=input[highIndex];
-        if (greater(pivot1, pivot2)){
-            SortUtils.swap(input, lowIndex, highIndex);
-            pivot1=input[lowIndex];
-            pivot2=input[highIndex];
+    private void quickSort(T[] a, int left, int right)
+    {
+        if (left >= right ) return;
+        int k;
+        T v = a[right];
+        int i = left - 1, j = right, p = left - 1, q = right;
+        for(;;)
+        {
+            while (lesser(a[++i], v)) ;
+            while (lesser(v,a[--j])) if (j == left) break;
+            if (i >= j) break;
+            swap(a, i, j);
+            if (a[i] == v) { p++; swap(a,p,i); }
+            if (v == a[j]) { q--; swap(a,q,j); }
         }
-        else if (pivot1==pivot2){
-            while (pivot1.equals(pivot2) && lowIndex<highIndex){
-                lowIndex++;
-                pivot1=input[lowIndex];
-            }
-        }
-
-
-        int i=lowIndex+1;
-        int lt=lowIndex+1;
-        int gt=highIndex-1;
-
-        while (i<=gt){
-
-            if (lesser(input[i], pivot1)){
-                SortUtils.swap(input, i++, lt++);
-            }
-            else if (lesser(pivot2, input[i])){
-                SortUtils.swap(input, i, gt--);
-            }
-            else{
-                i++;
-            }
-
-        }
-        SortUtils.swap(input, lowIndex, --lt);
-        SortUtils.swap(input, highIndex, ++gt);
-
-        sort(input, lowIndex, lt-1);
-        sort (input, lt+1, gt-1);
-        sort(input, gt+1, highIndex);
-
+        swap(a, i, right);
+        j = i-1;
+        i = i+1;
+        for (k = left ; k <= p; k++, j --) swap(a,k,j);
+        for (k = right-1; k >= q; k--, i++) swap(a, k,i);
+        quickSort(a, left, j);
+        quickSort(a, i, right);
     }
+
 }

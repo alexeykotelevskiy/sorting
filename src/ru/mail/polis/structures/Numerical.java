@@ -25,4 +25,7 @@ public interface Numerical<T> extends Comparable<T> {
      * @return Количество разрядов
      */
     int getDigitCount();
+
+
+
 }

@@ -58,10 +58,21 @@ public class SimpleStringSortBench extends StateInput {
 
     @Setup(value = Level.Trial)
     public void setUpTrial() {
-        currstate = State.STRINGS;
+        currstate = State.STRINGS_RANDOM_SIZE;
 
         data = new String[TEST_COUNT][DATA_COUNT];
         dataSimpleString = new SimpleString[TEST_COUNT][DATA_COUNT];
+
+        if (currstate == State.STRINGS)
+        {
+            for (int i=0; i < TEST_COUNT; i++)
+            {
+                data[i] = SortUtils.generateRandomStringOneSizeArray(DATA_COUNT);
+                dataSimpleString[i] = SortUtils.generateSimpleString(data[i]);
+            }
+        }
+
+
 
 
         if (currstate == State.STRINGS_RANDOM_SIZE)
@@ -69,15 +80,6 @@ public class SimpleStringSortBench extends StateInput {
             for (int i=0; i < TEST_COUNT; i++)
             {
                 data[i] = SortUtils.generateRandomStringArray(DATA_COUNT);
-                dataSimpleString[i] = SortUtils.generateSimpleString(data[i]);
-            }
-        }
-
-        if (currstate == State.STRINGS)
-        {
-            for (int i=0; i < TEST_COUNT; i++)
-            {
-                data[i] = SortUtils.generateRandomStringOneSizeArray(DATA_COUNT);
                 dataSimpleString[i] = SortUtils.generateSimpleString(data[i]);
             }
         }
@@ -106,7 +108,7 @@ public class SimpleStringSortBench extends StateInput {
     @Benchmark
     public void measureQuickSort1()
     {
-        quickSort1.sort(curr);
+         quickSort1.sort(curr);
     }
 
     @Benchmark

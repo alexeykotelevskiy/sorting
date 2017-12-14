@@ -14,6 +14,10 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import ru.mail.polis.sort.HeapSort;
 import ru.mail.polis.sort.LSDSort;
@@ -113,5 +117,12 @@ public class SimpleIntegerSortBench extends StateInput {
     public void measureLSDSort()
     {
         lsd.sort(currSimpleInteger);
+    }
+
+    public static void main(String[] args) throws RunnerException {
+        Options opt = new OptionsBuilder()
+                .include(SimpleIntegerSortBench.class.getSimpleName())
+                .build();
+        new Runner(opt).run();
     }
 }

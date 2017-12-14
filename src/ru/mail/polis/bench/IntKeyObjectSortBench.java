@@ -14,11 +14,16 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import ru.mail.polis.sort.CountingSort;
 import ru.mail.polis.sort.Sort;
 import ru.mail.polis.sort.SortUtils;
 import ru.mail.polis.structures.IntKeyIntegerValueObject;
+import ru.mail.polis.structures.IntKeyObject;
 import ru.mail.polis.structures.IntKeyStringValueObject;
 import ru.mail.polis.structures.SimpleInteger;
 
@@ -34,19 +39,17 @@ import ru.mail.polis.structures.SimpleInteger;
 @Fork(1)
 public class IntKeyObjectSortBench extends StateInput{
 
-    CountingSort<IntKeyIntegerValueObject> countingSort = new CountingSort<>();
-    IntKeyIntegerValueObject[][] data;
-    IntKeyIntegerValueObject[] curr;
-
-    IntKeyStringValueObject[][] dataStr;
-    IntKeyStringValueObject[] currStr;
+    CountingSort<IntKeyObject> countingSort = new CountingSort<>();
+    IntKeyObject[][] data;
+    IntKeyObject[] curr;
 
     @Setup(value = Level.Trial)
     public void setUpTrial() {
-        currstate = State.MANY_DOUBLE;
+        currstate = State.STRINGS;
 
 
-        data = new IntKeyIntegerValueObject[TEST_COUNT][DATA_COUNT];
+        data = new IntKeyObject[TEST_COUNT][DATA_COUNT];
+
         if (currstate == State.UNIQUE)
         {
             for (int i = 0; i < TEST_COUNT; i++)
@@ -64,6 +67,23 @@ public class IntKeyObjectSortBench extends StateInput{
             for (int i = 0; i < TEST_COUNT; i++)
                 data[i] = SortUtils.generateIntKeyArray(SortUtils.generateManyDouble(DATA_COUNT));
         }
+
+        if (currstate == State.STRINGS)
+        {
+            for (int i=0;i<TEST_COUNT;i++)
+            {
+                data[i] = SortUtils.generateIntKeyStrArray(SortUtils.generateRandomStringOneSizeArray(DATA_COUNT), DATA_COUNT);
+            }
+
+        }
+
+        if (currstate == State.STRINGS_RANDOM_SIZE)
+        {
+            for (int i=0;i<TEST_COUNT;i++)
+            {
+                data[i] = SortUtils.generateIntKeyStrArray(SortUtils.generateRandomStringArray(DATA_COUNT), DATA_COUNT);
+            }
+        }
     }
 
     @Setup(value = Level.Invocation)
@@ -77,5 +97,12 @@ public class IntKeyObjectSortBench extends StateInput{
     public void measureCountSort()
     {
         countingSort.sort(curr);
+    }
+
+    public static void main(String[] args) throws RunnerException {
+        Options opt = new OptionsBuilder()
+                .include(IntKeyObjectSortBench.class.getSimpleName())
+                .build();
+        new Runner(opt).run();
     }
 }

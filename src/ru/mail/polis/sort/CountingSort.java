@@ -8,7 +8,15 @@ import ru.mail.polis.structures.IntKeyObject;
  */
 public class CountingSort<T extends IntKeyObject> implements Sort<T> {
 
-    int findMax(T[] a) {
+    private int findMin(T[] a) throws ArrayIndexOutOfBoundsException{
+        int min = a[0].getKey();
+        for (int i = 1; i < a.length; i++) {
+            min = Math.min(min, a[i].getKey());
+        }
+        return min;
+    }
+
+    private int findMax(T[] a) throws ArrayIndexOutOfBoundsException{
         int max = a[0].getKey();
         for (int i = 1; i < a.length; i++) {
             max = Math.max(max, a[i].getKey());
@@ -23,17 +31,24 @@ public class CountingSort<T extends IntKeyObject> implements Sort<T> {
     @Override
     public void sort(T[] array) {
 
-        int max = findMax(array);
-        int[] count = new int[max + 1];
-        for (T x : array) {
-            count[x.getKey()]++;
+        int max;
+        int min;
+        try {
+            min = findMin(array);
+            max = findMax(array);
+        } catch (ArrayIndexOutOfBoundsException e){
+            return;
         }
-        for (int i = 1; i <= max; i++) {
+        int[] count = new int[(max - min) + 1];
+        for (T x : array) {
+            count[x.getKey() - min]++;
+        }
+        for (int i = 1; i <= max - min; i++) {
             count[i] += count[i - 1];
         }
         T[] res = (T[])new IntKeyObject[array.length];
         for (int i = array.length - 1; i >= 0; i--) {
-            res[--count[array[i].getKey()]] = array[i];
+            res[--count[array[i].getKey() - min]] = array[i];
         }
         System.arraycopy(res, 0, array, 0, array.length);
     }

@@ -86,6 +86,7 @@ public class AverageTimeBench extends StateInput{
     }
 
     public static void main(String[] args) throws RunnerException {
+
         Options opt = new OptionsBuilder()
                 .include(AverageTimeBench.class.getSimpleName())
                 .include(IntKeyObjectSortBench.class.getSimpleName())

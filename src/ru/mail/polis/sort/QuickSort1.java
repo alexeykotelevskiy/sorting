@@ -3,17 +3,18 @@ package ru.mail.polis.sort;
 import java.util.Random;
 
 public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
-
+    Random r = new Random();
     private void quickSort(T[] a, int left, int right)
     {
         if (left >= right ) return;
         if (right - left <=15)
         {
             insertionSort(a, left,right);
+        } else {
+            int idx = partition(a, left, right);
+            quickSort(a, left, idx - 1);
+            quickSort(a, idx, right);
         }
-        int idx = partition(a, left, right);
-        quickSort(a,left,idx - 1);
-        quickSort(a,idx,right);
     }
 
     private void insertionSort(T[] a, int left,int right){
@@ -28,7 +29,7 @@ public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
 
     private int partition(T[] a, int left, int right)
     {
-        Random r = new Random();
+
         T p = a[r.nextInt(right - left) + left];
         int i = left, j = right;
         while (i <= j)
@@ -37,7 +38,7 @@ public class QuickSort1<T> extends AbstractSortOnComparisons<T> {
             while (greater(a[j], p)) j--;
             if (i <= j)
             {
-                SortUtils.swap(a,i,j);
+                swap(a,i,j);
                 i++;
                 j--;
             }

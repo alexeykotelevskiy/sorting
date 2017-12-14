@@ -11,7 +11,7 @@ public class StateInput {
     State currstate;
     int index = 0;
     static final int TEST_COUNT = 10;
-    static final int DATA_COUNT = 10000;
+    static final int DATA_COUNT = 1000;
 
 
 }

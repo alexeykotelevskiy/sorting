@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 public class SimpleString implements Numerical<SimpleString> {
 
     private static final Pattern SIMPLE_STRING = Pattern.compile("^[a-z]+$");
-    private static final int DIGIT_COUNT = 100;
+    private static final int DIGIT_COUNT = 'z' - 'a' + 1;
     private static final int MIN_DIGIT_VALUE = 'a' - 1;
 
-    private final String data;
+    public final String data;
     private final int length;
 
     public SimpleString(String data) throws IllegalArgumentException {
@@ -33,7 +33,8 @@ public class SimpleString implements Numerical<SimpleString> {
         } else if (index >= getDigitCount()) {
             return MIN_DIGIT_VALUE;
         } else {
-            return data.charAt(index) - MIN_DIGIT_VALUE;
+
+            return data.charAt(data.length() - index - 1) - MIN_DIGIT_VALUE;
         }
     }
 
